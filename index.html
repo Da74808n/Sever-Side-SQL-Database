@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Add Record Form</title>
+</head>
+<body > 
+    <script>
+    
+    
+    function ajaxRequest(){
+ var activexmodes=["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"] //activeX versions to check for in IE
+ if (window.ActiveXObject){ //Test for support for ActiveXObject in IE first (as XMLHttpRequest in IE7 is broken)
+  for (var i=0; i<activexmodes.length; i++){
+   try{
+    return new ActiveXObject(activexmodes[i])
+   }
+   catch(e){
+    //suppress error
+   }
+  }
+ }
+ else if (window.XMLHttpRequest) // if Mozilla, Safari etc
+  return new XMLHttpRequest()
+ else
+  return false
+}
+
+//Sample call:
+//var myajaxrequest=new ajaxRequest()
+    
+function postForm () { 
+    var mypostrequest=new ajaxRequest()
+    mypostrequest.onreadystatechange=function(){
+     if (mypostrequest.readyState==4){
+      if (mypostrequest.status==200){
+            alert(mypostrequest.responseText);
+      }
+      else{
+       alert("An error has occured making the request")
+      }
+     }
+    }
+    var namevalue=encodeURIComponent(document.getElementById("Name").value)
+    var myidvalue=encodeURIComponent(document.getElementById("myid").value)
+    var agevalue=encodeURIComponent(document.getElementById("age").value)
+    var parameters="name="+namevalue+"&id="+myidvalue+"&age="+agevalue
+    mypostrequest.open("POST", "insert.php", true)
+    mypostrequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+    mypostrequest.send(parameters)
+
+    }
+    
+    </script>
+    
+    
+    
+    
+    
+<form action="insert.php" method="post">
+    <p>
+        <label for="myid">id:</label>
+        <input type="text" name="id" id="myid">
+    </p>
+    <p>
+        <label for="Name">name:</label>
+        <input type="text" name="name" id="Name">
+    </p>
+    <p>
+        <label for="age">age:</label>
+        <input type="text" name="age" id="age">
+    </p>
+    <input type="submit" value="Submit">
+    
+      <input type="button" value="ajax" onclick="postForm()"> 
+    
+</form>
+    
+    
+    <form action="search.php" method="post">
+        <label for="age">age:</label>
+        <input type="text" name="age" id="age">
+        <input type="submit" value="Search">
+    </form>
+</body>
+</html>
